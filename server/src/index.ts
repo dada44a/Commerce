@@ -13,6 +13,9 @@ dotenv.config();
 connectDB();
 const app = express();
 
+// Required for secure cookies behind Vercel/Railway/Render reverse proxies
+app.set("trust proxy", 1);
+
 
 const allowedOrigins = [
   "https://commerce-i7je.vercel.app",

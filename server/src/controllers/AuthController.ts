@@ -67,6 +67,7 @@ class AuthController {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
+                path: "/",
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
 
@@ -87,7 +88,12 @@ class AuthController {
 
     logout = (_req: Request, res: Response) => {
         try {
-            res.clearCookie("token");
+            res.clearCookie("token", {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+                path: "/"
+            });
             res.status(200).json({ message: "logout successfully" });
         } catch (error) {
             console.log(error);
