@@ -6,7 +6,7 @@ export default async function Home() {
   let products = { products: [] };
 
   try {
-    const res = await fetch(`${process.env.API_URL}/products`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
       next: { revalidate: 3600 } // Example: Cache for 1 hour
     });
 

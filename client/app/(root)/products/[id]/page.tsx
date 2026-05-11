@@ -11,7 +11,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
   let product = null;
 
   try {
-    const res = await fetch(`${process.env.API_URL}/products/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
       next: { revalidate: 60 }
     });
 
