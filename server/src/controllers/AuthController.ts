@@ -6,7 +6,7 @@ import User from "../models/user.js";
 class AuthController {
     register = async (req: Request, res: Response) => {
         try {
-            const { name, email, password } = req.body;
+            const { name, email, password, role } = req.body;
             if (!name || !email || !password) {
                 return res.status(400).json({ message: "All fields are required" });
             }
@@ -21,7 +21,9 @@ class AuthController {
                 name,
                 email,
                 password: hashedPassword,
-            });
+                role: role || "user" // Set default role to "user" if not provided
+            }); 
+        
 
             res.status(201).json({
                 message: "User created successfully",
