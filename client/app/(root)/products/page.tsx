@@ -1,14 +1,33 @@
 // import React, { useState, useMemo } from 'react';
 import ProductCard from '@/components/ProductCard';
 // import FilterSidebar from '@/components/FilterSidebar';
+export const dynamic = "force-dynamic";
 
 
 export default async function ProductsPage() {
 
-  const res = await fetch(`${process.env.API_URL}/products`); 
-  const res2 = await res.json();
-  const products = JSON.parse(JSON.stringify(res2));
-  console.log("Fetched products:", products);
+  let products: any = { products: [] };
+  
+  try {
+    const res = await fetch(`${process.env.API_URL}/products`, {
+      cache: 'no-store' // Or handle revalidation as needed
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+    }
+
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new TypeError("API did not return JSON");
+    }
+
+    products = await res.json();
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+
+  console.log("Fetched products count:", products.products?.length || 0);
 
 
   return (
@@ -21,7 +40,7 @@ export default async function ProductsPage() {
             <h1 className="text-4xl font-bold text-slate-900 mb-2">Our Collection</h1>
             <p className="text-slate-500 max-w-md">Browse through our curated selection of premium apparel and accessories.</p>
           </div>
-          <p className="text-slate-400 font-medium">{products.length} Products Found</p>
+          <p className="text-slate-400 font-medium">{products.products?.length || 0} Products Found</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10">

@@ -1,17 +1,35 @@
 import ProductActions from '@/components/ProductActions';
 import Link from 'next/link';
 import Image from 'next/image';
+export const dynamic = "force-dynamic";
 
 export default async function ProductDetailsPage({ params }: { params: Promise<{ id: string }> }) {
 
   const { id } = await params;
 
 
-  const res = await fetch(`${process.env.API_URL}/products/${id}`);
+  let product = null;
 
-  const data = await res.json();
-  const product = data.product;
-  console.log("API response for product:", data);
+  try {
+    const res = await fetch(`${process.env.API_URL}/products/${id}`, {
+      next: { revalidate: 60 }
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch product ${id}: ${res.status} ${res.statusText}`);
+    }
+
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new TypeError("API did not return JSON");
+    }
+
+    const data = await res.json();
+    product = data.product;
+    console.log("API response for product:", data);
+  } catch (error) {
+    console.error(`Error fetching product ${id}:`, error);
+  }
 
 
   console.log("Fetched product:", JSON.stringify(product));

@@ -3,8 +3,26 @@ import ProductCard from "@/components/ProductCard";
 
 
 export default async function Home() {
-  const res = await fetch(`${process.env.API_URL}/products`);
-  const products = await res.json();
+  let products = { products: [] };
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/products`, {
+      next: { revalidate: 3600 } // Example: Cache for 1 hour
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+    }
+
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new TypeError("API did not return JSON");
+    }
+
+    products = await res.json();
+  } catch (error) {
+    console.error("Error fetching products on home page:", error);
+  }
 
   return (
     <div className="pb-20">
