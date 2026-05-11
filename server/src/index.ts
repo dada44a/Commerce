@@ -14,13 +14,28 @@ connectDB();
 const app = express();
 
 
+const allowedOrigins = [
+  "https://commerce-i7je.vercel.app",
+  "https://commerce-i7je-git-main-dada44as-projects.vercel.app"
+];
+
+
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: "https://commerce-i7je.vercel.app", // Adjust this to your frontend's URL
-  credentials: true // Adjust this to your frontend's URL
-}));
 
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.includes(".vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
 
 app.use("/products", productRouter);
 app.use("/auth", authRouter);
