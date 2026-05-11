@@ -1,0 +1,25 @@
+{
+  "product": {
+    "_id": "69fd826c70f1770b20e471d9",
+    "name": "Floral Summer Dress",
+    "price": 45.99,
+    "description": "Lightweight floral dress perfect for summer outings and casual wear.",
+    "category": "Dress",
+    "stock": 25,
+    "createdAt": "2026-05-08T06:27:56.832Z",
+    "updatedAt": "2026-05-08T06:27:56.832Z",
+    "__v": 0
+  }
+
+
+
+}
+
+
+{
+  "name": "Dada Tshr",
+  "price": 120.0,
+  "description": "Long elegant gown suitable for parties, weddings, and formal events.",
+  "category": "Dress",
+  "stock": 10
+}
