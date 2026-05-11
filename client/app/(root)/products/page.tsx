@@ -9,7 +9,7 @@ export default async function ProductsPage() {
   let products: any = { products: [] };
   
   try {
-    const res = await fetch(`${process.env.API_URL}/products`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
       cache: 'no-store' // Or handle revalidation as needed
     });
     
